@@ -1,4 +1,4 @@
-package helpdesk_backend;
+package com.university.helpdesk;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
