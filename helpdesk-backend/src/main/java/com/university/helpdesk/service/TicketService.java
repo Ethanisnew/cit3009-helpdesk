@@ -36,4 +36,25 @@ public class TicketService {
         }
         return ticketRepository.findAll();
     }
+
+    public Ticket updateStatus(Long ticketId, Status status, Long technicianId) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new RuntimeException("Ticket not found"));
+        ticket.setStatus(status);
+        if (technicianId != null) {
+            // optionally verify technician exists
+        }
+        return ticketRepository.save(ticket);
+    }
+
+    public Ticket resolveTicket(Long ticketId, String resolutionNotes) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new RuntimeException("Ticket not found"));
+        ticket.resolve(resolutionNotes); // uses the method M3 wrote in the Ticket entity!
+        return ticketRepository.save(ticket);
+    }
+
+    public Ticket updateStatusSimple(Long ticketId, Status newStatus) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new RuntimeException("Ticket not found"));
+        ticket.setStatus(newStatus);
+        return ticketRepository.save(ticket);
+    }
 }

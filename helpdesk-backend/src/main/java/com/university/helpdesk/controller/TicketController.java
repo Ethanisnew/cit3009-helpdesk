@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,5 +43,29 @@ public class TicketController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<TicketResponse> updateStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        Status status = Status.valueOf(body.get("status"));
+        Long techId = body.containsKey("technicianId") ? Long.parseLong(body.get("technicianId")) : null;
+        Ticket ticket = ticketService.updateStatus(id, status, techId);
+        return ResponseEntity.ok(new TicketResponse(ticket));
+    }
+
+    @PutMapping("/{id}/resolve")
+    public ResponseEntity<TicketResponse> resolveTicket(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        Ticket ticket = ticketService.resolveTicket(id, body.get("resolutionNotes"));
+        return ResponseEntity.ok(new TicketResponse(ticket));
+    }
+
+    @PutMapping("/{id}/close")
+    public ResponseEntity<TicketResponse> closeTicket(@PathVariable Long id) {
+        return ResponseEntity.ok(new TicketResponse(ticketService.updateStatusSimple(id, Status.CLOSED)));
+    }
+
+    @PutMapping("/{id}/reopen")
+    public ResponseEntity<TicketResponse> reopenTicket(@PathVariable Long id) {
+        return ResponseEntity.ok(new TicketResponse(ticketService.updateStatusSimple(id, Status.REOPENED)));
     }
 }
