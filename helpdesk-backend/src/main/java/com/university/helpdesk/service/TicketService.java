@@ -1,0 +1,39 @@
+package com.university.helpdesk.service;
+
+import com.university.helpdesk.entity.model.Status;
+import com.university.helpdesk.entity.model.Ticket;
+import com.university.helpdesk.entity.model.User;
+import com.university.helpdesk.repository.TicketRepository;
+import com.university.helpdesk.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class TicketService {
+
+    @Autowired
+    private TicketRepository ticketRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public Ticket createTicket(String subject, String description, com.university.helpdesk.entity.model.Priority priority, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Ticket ticket = new Ticket(subject, description, priority, user);
+        return ticketRepository.save(ticket);
+    }
+
+    public List<Ticket> searchTickets(Long userId, Long technicianId, Status status) {
+        if (userId != null) {
+            return ticketRepository.findByUser_Id(userId);
+        } else if (technicianId != null) {
+            return ticketRepository.findByTechnician_Id(technicianId);
+        } else if (status != null) {
+            return ticketRepository.findByStatus(status);
+        }
+        return ticketRepository.findAll();
+    }
+}
