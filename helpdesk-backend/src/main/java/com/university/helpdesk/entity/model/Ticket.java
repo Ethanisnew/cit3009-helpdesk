@@ -1,5 +1,4 @@
-package com.helpdesk.model;
-
+package com.university.helpdesk.entity.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
-package com.helpdesk.repository;
+package com.university.helpdesk.repository;
  
-import com.helpdesk.model.Role;
-import com.helpdesk.model.User;
+import com.university.helpdesk.entity.model.Role;
+import com.university.helpdesk.entity.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
  

@@ -1,4 +1,4 @@
-package com.university.helpdesk.helpdeskbackend.dto;
+package com.university.helpdesk.dto;
 
 import lombok.Data;
 

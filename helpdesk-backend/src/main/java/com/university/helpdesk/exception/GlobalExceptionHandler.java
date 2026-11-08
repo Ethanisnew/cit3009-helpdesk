@@ -1,4 +1,4 @@
-package com.university.helpdesk.helpdeskbackend.exception;
+package com.university.helpdesk.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

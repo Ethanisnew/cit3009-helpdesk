@@ -1,6 +1,6 @@
-package com.helpdesk.repository;
+package com.university.helpdesk.repository;
  
-import com.helpdesk.model.Comment;
+import com.university.helpdesk.entity.model.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
  

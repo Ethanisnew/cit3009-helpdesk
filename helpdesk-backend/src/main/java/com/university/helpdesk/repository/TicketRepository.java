@@ -1,8 +1,8 @@
-package com.helpdesk.repository;
+package com.university.helpdesk.repository;
  
-import com.helpdesk.model.Priority;
-import com.helpdesk.model.Status;
-import com.helpdesk.model.Ticket;
+import com.university.helpdesk.entity.model.Priority;
+import com.university.helpdesk.entity.model.Status;
+import com.university.helpdesk.entity.model.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

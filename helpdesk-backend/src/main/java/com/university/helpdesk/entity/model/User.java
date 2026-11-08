@@ -1,7 +1,7 @@
-package com.helpdesk.model;
-
+package com.university.helpdesk.entity.model;
 import java.util.ArrayList;
 import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
