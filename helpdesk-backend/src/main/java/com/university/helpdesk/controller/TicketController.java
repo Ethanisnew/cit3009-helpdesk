@@ -59,6 +59,14 @@ public class TicketController {
         return ResponseEntity.ok(new TicketResponse(ticket));
     }
 
+    @PutMapping("/{id}/assign")
+    public ResponseEntity<TicketResponse> assignTicket(@PathVariable Long id, @RequestBody Map<String, Long> body) {
+        Long techId = body.get("technicianId");
+        Long adminId = body.get("assignedBy");
+        Ticket ticket = ticketService.assignTicket(id, techId, adminId);
+        return ResponseEntity.ok(new TicketResponse(ticket));
+    }
+
     @PutMapping("/{id}/close")
     public ResponseEntity<TicketResponse> closeTicket(@PathVariable Long id) {
         return ResponseEntity.ok(new TicketResponse(ticketService.updateStatusSimple(id, Status.CLOSED)));
@@ -68,4 +76,5 @@ public class TicketController {
     public ResponseEntity<TicketResponse> reopenTicket(@PathVariable Long id) {
         return ResponseEntity.ok(new TicketResponse(ticketService.updateStatusSimple(id, Status.REOPENED)));
     }
+
 }

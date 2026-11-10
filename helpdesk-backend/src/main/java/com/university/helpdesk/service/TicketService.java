@@ -1,8 +1,12 @@
 package com.university.helpdesk.service;
 
+import com.university.helpdesk.entity.model.Administrator;
 import com.university.helpdesk.entity.model.Status;
+import com.university.helpdesk.entity.model.Technician;
 import com.university.helpdesk.entity.model.Ticket;
 import com.university.helpdesk.entity.model.User;
+import com.university.helpdesk.repository.AdministratorRepository;
+import com.university.helpdesk.repository.TechnicianRepository;
 import com.university.helpdesk.repository.TicketRepository;
 import com.university.helpdesk.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,14 @@ public class TicketService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TechnicianRepository technicianRepository;
+
+    @Autowired
+    private AdministratorRepository administratorRepository;
+
+    // ... leave the rest of your methods exactly as they are ...
 
     public Ticket createTicket(String subject, String description, com.university.helpdesk.entity.model.Priority priority, Long userId) {
         User user = userRepository.findById(userId)
@@ -55,6 +67,32 @@ public class TicketService {
     public Ticket updateStatusSimple(Long ticketId, Status newStatus) {
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new RuntimeException("Ticket not found"));
         ticket.setStatus(newStatus);
+        return ticketRepository.save(ticket);
+    }
+
+    public Ticket assignTicket(Long ticketId, Long technicianId, Long adminId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+        Technician tech = technicianRepository.findById(technicianId)
+                .orElseThrow(() -> new RuntimeException("Technician not found"));
+        Administrator admin = administratorRepository.findById(adminId)
+                .orElseThrow(() -> new RuntimeException("Admin not found"));
+
+        ticket.assign(tech, admin); // Uses M3's entity method!
+        return ticketRepository.save(ticket);
+    }
+
+    public Ticket closeTicket(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+        ticket.setStatus(com.university.helpdesk.entity.model.Status.CLOSED);
+        return ticketRepository.save(ticket);
+    }
+
+    public Ticket reopenTicket(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+        ticket.setStatus(com.university.helpdesk.entity.model.Status.REOPENED);
         return ticketRepository.save(ticket);
     }
 }

@@ -1,10 +1,12 @@
 package com.university.helpdesk.service;
 
+import com.university.helpdesk.entity.model.Administrator;
+import com.university.helpdesk.entity.model.Role;
+import com.university.helpdesk.entity.model.Technician;
 import com.university.helpdesk.entity.model.User;
 import com.university.helpdesk.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class UserService {
@@ -22,19 +24,26 @@ public class UserService {
             throw new RuntimeException("Invalid username or password");
         }
 
-
-
         return user;
     }
 
-    public User register(String username, String password, String name, com.university.helpdesk.entity.model.Role role) {
-        // Check if username is taken
+    public User register(String username, String password, String name, Role role) {
         if (userRepository.existsByUsername(username)) {
             throw new RuntimeException("Username already exists");
         }
 
-        // Create and save the new user
-        User newUser = new User(username, password, name, role);
+        User newUser;
+        if (role == Role.TECHNICIAN) {
+            // Create a real Technician entity (subclass)
+            newUser = new Technician(username, password, name, "General");
+        } else if (role == Role.ADMIN) {
+            // Create a real Administrator entity (subclass)
+            newUser = new Administrator(username, password, name);
+        } else {
+            // Normal User
+            newUser = new User(username, password, name, role);
+        }
+
         return userRepository.save(newUser);
     }
 }
