@@ -61,7 +61,7 @@ public final class ApiClient {
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-    private final String baseUrl = System.getProperty("helpdesk.api.url", "http://localhost:8080").replaceAll("/+$", "");
+    private final String baseUrl = System.getProperty("helpdesk.api.url", "http://localhost:8081").replaceAll("/+$", "");
 
     private ApiClient() {
     }

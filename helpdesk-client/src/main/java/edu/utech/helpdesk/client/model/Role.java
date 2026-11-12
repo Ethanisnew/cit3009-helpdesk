@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 
 /** The three user roles the system supports. */
 public enum Role {
-    @JsonAlias({"STUDENT", "STAFF"})
+    @JsonAlias({"STUDENT", "STAFF", "STUDENT_STAFF"})
     USER,
     TECHNICIAN,
     ADMIN;
