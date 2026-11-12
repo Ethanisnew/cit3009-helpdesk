@@ -12,6 +12,6 @@ public interface TechnicianRepository extends JpaRepository<Technician, Long> {
     // Technicians who can currently be assigned tickets
     List<Technician> findByActiveTrue();
     
-    // All technitions of a certain specialization
+    // All technicians of a certain specialization
     List<Technician> findBySpecialization(String specialization);
 }

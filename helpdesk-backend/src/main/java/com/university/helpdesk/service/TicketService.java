@@ -5,6 +5,8 @@ import com.university.helpdesk.entity.model.Status;
 import com.university.helpdesk.entity.model.Technician;
 import com.university.helpdesk.entity.model.Ticket;
 import com.university.helpdesk.entity.model.User;
+import com.university.helpdesk.entity.model.Comment;
+import com.university.helpdesk.repository.CommentRepository;
 import com.university.helpdesk.repository.AdministratorRepository;
 import com.university.helpdesk.repository.TechnicianRepository;
 import com.university.helpdesk.repository.TicketRepository;
@@ -16,6 +18,9 @@ import java.util.List;
 
 @Service
 public class TicketService {
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
     private TicketRepository ticketRepository;
@@ -94,5 +99,21 @@ public class TicketService {
                 .orElseThrow(() -> new RuntimeException("Ticket not found"));
         ticket.setStatus(com.university.helpdesk.entity.model.Status.REOPENED);
         return ticketRepository.save(ticket);
+    }
+
+    public List<Comment> getComments(Long ticketId) {
+        // M3 already wrote this query in CommentRepository!
+        return commentRepository.findByTicket_TicketIdOrderByDateCreatedAsc(ticketId);
+    }
+
+    public Comment addComment(Long ticketId, Long authorId, String content) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+        User user = userRepository.findById(authorId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Comment comment = new Comment(content, user);
+        comment.setTicket(ticket);
+        return commentRepository.save(comment);
     }
 }

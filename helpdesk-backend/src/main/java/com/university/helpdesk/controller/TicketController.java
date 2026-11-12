@@ -2,6 +2,7 @@ package com.university.helpdesk.controller;
 
 import com.university.helpdesk.dto.CreateTicketRequest;
 import com.university.helpdesk.dto.TicketResponse;
+import com.university.helpdesk.dto.CommentResponse;
 import com.university.helpdesk.entity.model.Status;
 import com.university.helpdesk.entity.model.Ticket;
 import com.university.helpdesk.service.TicketService;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tickets")
-public class TicketController {
+public class  TicketController {
 
     @Autowired
     private TicketService ticketService;
@@ -75,6 +76,23 @@ public class TicketController {
     @PutMapping("/{id}/reopen")
     public ResponseEntity<TicketResponse> reopenTicket(@PathVariable Long id) {
         return ResponseEntity.ok(new TicketResponse(ticketService.updateStatusSimple(id, Status.REOPENED)));
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long id) {
+        List<CommentResponse> response = ticketService.getComments(id).stream()
+                .map(CommentResponse::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<CommentResponse> addComment(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+        Long authorId = Long.valueOf(body.get("authorId").toString());
+        String content = body.get("content").toString();
+
+        com.university.helpdesk.entity.model.Comment comment = ticketService.addComment(id, authorId, content);
+        return ResponseEntity.ok(new CommentResponse(comment));
     }
 
 }

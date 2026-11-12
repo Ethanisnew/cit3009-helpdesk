@@ -16,7 +16,7 @@ import java.util.List;
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
  
  
-    // Shows ticvkets submitted by staff/students
+    // Shows tickets submitted by staff/students
     List<Ticket> findByUser_Id(Long userId);
  
     // Shows tickets assigned to a tech
