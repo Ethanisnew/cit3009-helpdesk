@@ -1,5 +1,8 @@
 package com.university.helpdesk.controller;
 
+import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.university.helpdesk.dto.UserResponse;
 import com.university.helpdesk.entity.model.User;
 import com.university.helpdesk.dto.LoginRequest;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 public class AuthController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     @Autowired
     private UserService userService;
 
@@ -19,6 +24,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@RequestBody LoginRequest request) {
         User user = userService.login(request.getUsername(), request.getPassword());
+        logger.info("Login attempt for user: {}", request.getUsername());
         return ResponseEntity.ok(new UserResponse(user));
     }
 
