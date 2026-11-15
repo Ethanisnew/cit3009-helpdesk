@@ -30,8 +30,6 @@ public class ReportController {
 	@Autowired
 	private TicketRepository ticketRepository;
 
-	// ===== M3's original endpoints =====
-
 	@GetMapping("/tickets-submitted")
 	public TicketReport ticketsSubmitted(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
 										 @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {

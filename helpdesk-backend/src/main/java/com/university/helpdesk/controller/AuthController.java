@@ -1,11 +1,10 @@
 package com.university.helpdesk.controller;
 
-import lombok.extern.java.Log;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.university.helpdesk.dto.UserResponse;
-import com.university.helpdesk.entity.model.User;
 import com.university.helpdesk.dto.LoginRequest;
+import com.university.helpdesk.dto.RegisterRequest;
+import com.university.helpdesk.dto.UserResponse;
+import com.university.helpdesk.entity.model.Role;
+import com.university.helpdesk.entity.model.User;
 import com.university.helpdesk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,28 +14,31 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 public class AuthController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-
     @Autowired
     private UserService userService;
 
-    // POST endpoint for login
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@RequestBody LoginRequest request) {
         User user = userService.login(request.getUsername(), request.getPassword());
-        logger.info("Login attempt for user: {}", request.getUsername());
         return ResponseEntity.ok(new UserResponse(user));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody com.university.helpdesk.dto.RegisterRequest request) {
+    public ResponseEntity<UserResponse> register(@RequestBody RegisterRequest request) {
+        Role role = request.getRole() != null ? request.getRole() : Role.STUDENT_STAFF;
+
         User user = userService.register(
                 request.getUsername(),
                 request.getPassword(),
-                request.getName(),
-                request.getRole()
+                request.getFullName(),
+                request.getEmail(),
+                role
         );
-        user.setPassword(null); // Hide password in response
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(new UserResponse(user));
+    }
+
+    @PostMapping("/{id}/logout")
+    public ResponseEntity<Void> logout(@PathVariable Long id) {
+        return ResponseEntity.ok().build();
     }
 }

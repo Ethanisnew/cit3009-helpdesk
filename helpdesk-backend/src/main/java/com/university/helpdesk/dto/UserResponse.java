@@ -15,7 +15,7 @@ public class UserResponse {
         this.id = user.getId();
         this.username = user.getUsername();
         this.fullName = user.getName(); // Map backend 'name' to frontend 'fullName'
-        this.email = null; // No email in DB so null
+        this.email = user.getEmail();
         this.role = user.getRole();
         this.technicianId = null;
     }

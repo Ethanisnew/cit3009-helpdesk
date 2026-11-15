@@ -27,23 +27,20 @@ public class UserService {
         return user;
     }
 
-    public User register(String username, String password, String name, Role role) {
+    public User register(String username, String password, String name, String email, Role role) {
         if (userRepository.existsByUsername(username)) {
             throw new RuntimeException("Username already exists");
         }
 
         User newUser;
         if (role == Role.TECHNICIAN) {
-            // Create a real Technician entity (subclass)
-            newUser = new Technician(username, password, name, "General");
+            newUser = new com.university.helpdesk.entity.model.Technician(username, password, name, "General");
         } else if (role == Role.ADMIN) {
-            // Create a real Administrator entity (subclass)
-            newUser = new Administrator(username, password, name);
+            newUser = new com.university.helpdesk.entity.model.Administrator(username, password, name);
         } else {
-            // Normal User
             newUser = new User(username, password, name, role);
         }
-
+        newUser.setEmail(email);
         return userRepository.save(newUser);
     }
 }

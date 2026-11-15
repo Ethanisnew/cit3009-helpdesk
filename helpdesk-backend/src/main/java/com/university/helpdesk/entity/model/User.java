@@ -15,6 +15,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(length = 100)
+    private String email;
  
     @Column(nullable = false, unique = true, length = 50)
     private String username;
@@ -52,6 +55,8 @@ public class User {
     public Long getId(){
     	return id; 
     }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
     public String getUsername(){ 
     	return username;
     }

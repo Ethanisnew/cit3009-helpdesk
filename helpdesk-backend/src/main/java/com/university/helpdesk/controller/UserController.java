@@ -29,8 +29,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@RequestBody Map<String, String> body) {
-        // Re-use logic from UserService if you want, but for simplicity:
         User user = new User(body.get("username"), body.get("password"), body.get("fullName"), Role.valueOf(body.get("role")));
+        user.setEmail(body.get("email"));
         return ResponseEntity.ok(new UserResponse(userRepository.save(user)));
     }
 
@@ -39,6 +39,7 @@ public class UserController {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         user.setName(body.get("fullName"));
         user.setRole(Role.valueOf(body.get("role")));
+        user.setEmail(body.get("email"));
         return ResponseEntity.ok(new UserResponse(userRepository.save(user)));
     }
 
