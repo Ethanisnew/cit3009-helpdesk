@@ -38,7 +38,9 @@
 .connection { -fx-font-size: 12px; }
 .connection.online { -fx-text-fill: #6ee7a8; }
 .connection.offline { -fx-text-fill: #9fb0c4; }
-.btn-ghost {
+
+/* Fixed Logout Button */
+.button.btn-ghost {
     -fx-background-color: transparent;
     -fx-border-color: #4a6584;
     -fx-border-radius: 4;
@@ -46,7 +48,10 @@
     -fx-text-fill: white;
     -fx-cursor: hand;
 }
-.btn-ghost:hover { -fx-background-color: -navy-light; }
+.button.btn-ghost:hover { -fx-background-color: -navy-light; }
+.button.btn-ghost .label { -fx-text-fill: white; }
+
+/* Fixed Notification Bell */
 .bell {
     -fx-background-color: transparent;
     -fx-text-fill: white;
@@ -102,7 +107,6 @@
 .button.btn-danger { -fx-border-color: -danger; -fx-text-fill: -danger; }
 .button.btn-danger .label { -fx-text-fill: -danger; }
 .button.btn-danger:hover { -fx-background-color: #fbeceb; }
-.button.btn-ghost .label { -fx-text-fill: white; }
 .hyperlink { -fx-text-fill: -teal; }
 
 /* ---- inputs ---- */
@@ -185,3 +189,28 @@
 .dialog-pane { -fx-background-color: white; }
 .dialog-pane > .header-panel { -fx-background-color: #eef2f6; }
 .dialog-pane > .header-panel .label { -fx-font-weight: bold; -fx-text-fill: -navy; }
+
+/* ---- Context Menu (Notification Bell Dropdown) ---- */
+.context-menu {
+    -fx-background-color: white;
+    -fx-border-color: -line;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4);
+}
+.menu-item {
+    -fx-padding: 6 12 6 12;
+}
+.menu-item .label {
+    -fx-text-fill: -text;
+    -fx-font-size: 12px;
+}
+.menu-item:focused {
+    -fx-background-color: #d9eef0;
+}
+.menu-item:focused .label {
+    -fx-text-fill: -navy;
+}
+.menu-item:disabled .label {
+    -fx-text-fill: -muted;
+}
