@@ -1,5 +1,7 @@
 package com.university.helpdesk.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
@@ -13,9 +15,13 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Handle generic runtime errors (bad requests)
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, Object>> handleGenericException(RuntimeException ex) {
+        // THIS IS THE MAGIC LINE THAT WRITES TO error.log
+        logger.error("An unexpected error occurred: {}", ex.getMessage(), ex);
+
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("message", ex.getMessage());
@@ -24,9 +30,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    // Handle concurrent ticket assignment (Optimistic Locking)
     @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
     public ResponseEntity<Map<String, Object>> handleConcurrencyError(ObjectOptimisticLockingFailureException ex) {
+        logger.error("Concurrency conflict: {}", ex.getMessage(), ex);
+
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("message", "This ticket was just assigned to someone else. Please refresh and try again.");
